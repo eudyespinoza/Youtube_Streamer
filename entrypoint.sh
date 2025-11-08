@@ -6,11 +6,22 @@ if [[ -n "${TZ:-}" ]]; then
 fi
 
 build_filters() {
-  local filters=""
+  local vfilters=""
   if [[ "${ENABLE_OVERLAY:-0}" == "1" && -f "${OVERLAY_FILE:-}" ]]; then
-    filters="overlay=${OVERLAY_POSITION:-10:10}"
+    vfilters="overlay=${OVERLAY_POSITION:-10:10}"
   fi
-  [[ -n "$filters" ]] && echo "-vf $filters" || echo ""
+  
+  local afilters=""
+  if [[ "${AUDIO_FADE_LOOP:-0}" == "1" ]]; then
+    # Agregar fade in al inicio y fade out al final para suavizar el loop
+    afilters="afade=t=in:st=0:d=0.5,afade=t=out:st=7.5:d=0.5"
+  fi
+  
+  local filter_args=""
+  [[ -n "$vfilters" ]] && filter_args="-vf $vfilters"
+  [[ -n "$afilters" ]] && filter_args="$filter_args -af $afilters"
+  
+  echo "$filter_args"
 }
 
 build_input_args() {
