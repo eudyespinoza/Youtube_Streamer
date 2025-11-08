@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   youtube-stream:
     build: .
@@ -7,7 +6,7 @@ services:
     env_file:
       - /opt/environment/youtube_streamer/.env
     environment:
-      - TZ=${TZ}
+      - TZ=${TZ:-America/Argentina/Cordoba}
     volumes:
       - /opt/environment/youtube_streamer/.env:/app/.env:ro
       - ./media:/media:ro
