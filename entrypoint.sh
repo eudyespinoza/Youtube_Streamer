@@ -67,6 +67,7 @@ while true; do
     -r "${VIDEO_FRAMERATE:-30}" -s "${VIDEO_SIZE:-1920x1080}" \
     -b:v "${VIDEO_BITRATE:-3000k}" -maxrate "${VIDEO_MAXRATE:-3000k}" -bufsize "${VIDEO_BUFSIZE:-6000k}" \
     -pix_fmt "${PIX_FMT:-yuv420p}" \
+    -g 60 -keyint_min 60 -sc_threshold 0 \
     ${FILTER_ARGS} \
     -c:a "${AUDIO_CODEC:-aac}" -b:a "${AUDIO_BITRATE:-160k}" -ar "${AUDIO_RATE:-44100}" \
     -f flv "${OUTPUT_URL}" || true
