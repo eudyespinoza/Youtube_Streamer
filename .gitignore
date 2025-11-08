@@ -1,0 +1,29 @@
+# Secrets and credentials
+.env
+
+# Media files (can be large)
+media/*
+!media/.gitkeep
+!media/playlist.txt
+
+# Overlay files
+overlays/*
+!overlays/.gitkeep
+
+# Docker volumes
+docker-compose.override.yml
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~

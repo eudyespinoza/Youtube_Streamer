@@ -1,0 +1,5 @@
+# Playlist Format: one file path per line (relative to /media/)
+# Lines starting with # are comments
+file '/media/video1.mp4'
+file '/media/video2.mp4'
+file '/media/video3.mp4'

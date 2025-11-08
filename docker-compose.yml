@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  youtube-stream:
+    build: .
+    container_name: youtube_stream
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ./media:/media:ro
+      - ./overlays:/overlays:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -x ffmpeg >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
