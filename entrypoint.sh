@@ -11,15 +11,11 @@ build_filters() {
     vfilters="overlay=${OVERLAY_POSITION:-10:10}"
   fi
   
-  local afilters=""
-  if [[ "${AUDIO_FADE_LOOP:-0}" == "1" ]]; then
-    # Agregar fade in al inicio y fade out al final para suavizar el loop
-    afilters="afade=t=in:st=0:d=0.5,afade=t=out:st=7.5:d=0.5"
-  fi
+  # NOTA: AUDIO_FADE_LOOP deshabilitado - usar create_perfect_loop.sh en su lugar
+  # para crear videos con loop perfecto
   
   local filter_args=""
   [[ -n "$vfilters" ]] && filter_args="-vf $vfilters"
-  [[ -n "$afilters" ]] && filter_args="$filter_args -af $afilters"
   
   echo "$filter_args"
 }

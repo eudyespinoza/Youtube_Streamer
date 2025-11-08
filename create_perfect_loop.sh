@@ -30,13 +30,16 @@ if ! command -v ffmpeg &> /dev/null; then
     
     OFFSET=$((DURATION - CROSSFADE_DURATION))
     
-    # Crear el video con crossfade
+    # Crear el video con crossfade (método simplificado)
+    # Este método toma el final del video y lo cruza con el inicio
+    TRIM_START=$((DURATION - CROSSFADE_DURATION))
+    
     docker run --rm -v "$(pwd)/media:/media" jrottenberg/ffmpeg:6.0-ubuntu \
-      -i "/media/$INPUT_NAME" -i "/media/$INPUT_NAME" \
-      -filter_complex "[0:a]aformat=sample_rates=44100:channel_layouts=stereo[a0];[1:a]aformat=sample_rates=44100:channel_layouts=stereo[a1];[a0][a1]acrossfade=d=${CROSSFADE_DURATION}:c1=tri:c2=tri[audio];[0:v][1:v]xfade=transition=fade:duration=${CROSSFADE_DURATION}:offset=${OFFSET}[video]" \
-      -map "[video]" -map "[audio]" \
-      -c:v libx264 -preset medium -crf 18 \
-      -c:a aac -b:a 160k \
+      -i "/media/$INPUT_NAME" \
+      -filter_complex "[0:v]fade=t=out:st=${TRIM_START}:d=${CROSSFADE_DURATION}[vfade];[0:a]afade=t=out:st=${TRIM_START}:d=${CROSSFADE_DURATION}[afade]" \
+      -map "[vfade]" -map "[afade]" \
+      -c:v libx264 -preset medium -crf 18 -pix_fmt yuv420p \
+      -c:a aac -b:a 160k -ar 44100 \
       -movflags +faststart \
       -y "/media/$OUTPUT_NAME"
     
