@@ -5,10 +5,11 @@ services:
     container_name: youtube_stream
     restart: always
     env_file:
-      - .env
+      - /opt/environment/youtube_streamer/.env
     environment:
       - TZ=${TZ}
     volumes:
+      - /opt/environment/youtube_streamer/.env:/app/.env:ro
       - ./media:/media:ro
       - ./overlays:/overlays:ro
     healthcheck:

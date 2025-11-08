@@ -39,6 +39,7 @@ youtube-stream/
 
 ```bash
 mkdir -p /opt/youtube-stream/{media,overlays}
+mkdir -p /opt/environment/youtube_streamer
 cd /opt/youtube-stream
 # Copiar todos los archivos del proyecto aquí
 ```
@@ -46,9 +47,9 @@ cd /opt/youtube-stream
 ### 2. Configurar variables de entorno
 
 ```bash
-cp .env.example .env
-nano .env  # Editar y añadir tu YOUTUBE_STREAM_KEY
-chmod 600 .env
+cp .env.example /opt/environment/youtube_streamer/.env
+nano /opt/environment/youtube_streamer/.env  # Editar y añadir tu YOUTUBE_STREAM_KEY
+chmod 600 /opt/environment/youtube_streamer/.env
 ```
 
 ### 3. Añadir contenido multimedia
@@ -187,7 +188,7 @@ docker compose down
 ### Actualizar configuración
 ```bash
 # 1. Editar .env
-nano .env
+nano /opt/environment/youtube_streamer/.env
 
 # 2. Reconstruir y reiniciar
 docker compose up -d --build
@@ -238,7 +239,7 @@ frame=  150 fps= 30 q=28.0 size=    1024kB time=00:00:05.00 bitrate=1677.7kbits/
 ## 🔒 Seguridad
 
 - **Nunca** commitear el archivo `.env` con tu stream key
-- Usar `chmod 600 .env` para proteger credenciales
+- Usar `chmod 600 /opt/environment/youtube_streamer/.env` para proteger credenciales
 - Los volúmenes `media/` y `overlays/` son read-only (`:ro`)
 - No se exponen puertos al exterior
 
@@ -257,7 +258,7 @@ frame=  150 fps= 30 q=28.0 size=    1024kB time=00:00:05.00 bitrate=1677.7kbits/
 Si encuentras problemas:
 
 1. **Revisar logs**: `docker logs youtube_stream`
-2. **Verificar .env**: Todas las variables configuradas correctamente
+2. **Verificar .env**: Todas las variables en `/opt/environment/youtube_streamer/.env` configuradas correctamente
 3. **Probar video local**: Asegurarte que el archivo funciona con FFmpeg
 4. **Verificar stream key**: En YouTube Studio → Transmisión en vivo
 5. **Revisar conectividad**: `telnet a.rtmp.youtube.com 1935`
